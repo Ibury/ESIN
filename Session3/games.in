@@ -1,0 +1,38 @@
+1
+
+conte A 2
+conte A -1
+conte A 0
+conte A 1
+max A
+min A
+card A
+----------
+-1
+
+conte A 2
+conte A -1
+conte A 0
+conte A 1
+max A
+min A
+card A
+----------
+12 21 1
+
+conte A 21
+conte A 0
+conte A 1
+conte A 12
+max A
+min A
+card A
+----------
+12 21 17
+
+conte A 12
+conte A 21
+conte A 17
+max A 
+min A
+card A

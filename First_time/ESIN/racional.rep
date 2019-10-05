@@ -1,0 +1,11 @@
+
+int n;
+int d;
+
+std::pair <int,int> minimcomumultiple(const int &num1,const int &num2);
+
+void get_simplified ();
+
+void mostra_res ();
+
+int gcd (int n, int d);

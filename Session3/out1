@@ -1,0 +1,23 @@
+[]
+[1]
+conte A 0: 0
+conte A 1: 0
+conte B 0: 0
+conte B 1: 1
+max B: 1
+min B: 1
+card A: 0
+card B: 1
+----------
+[-8 -6 0 4 12 14]
+[-8 -5 1 12 13]
+conte A 0: 1
+conte A 1: 0
+conte B 0: 0
+conte B 1: 1
+max A: 14
+min A: -8
+max B: 13
+min B: -8
+card A: 6
+card B: 5

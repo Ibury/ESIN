@@ -1,0 +1,12 @@
+// Metodes privats
+bool comprovaVariable(const string &var);
+void easytolower(char &in);
+void getPriority (const token &t) const;
+int nivell() const;
+
+//Variables privades
+int n;
+codi cod;
+string var_name;
+double x;
+racional r;

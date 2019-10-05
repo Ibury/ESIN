@@ -1,0 +1,34 @@
+CC=gcc
+CXX=g++
+RM=rm -f
+#CPPFLAGS=-g $(shell root-config --cflags)
+#LDFLAGS=-g $(shell root-config --ldflags)
+#LDLIBS=$(shell root-config --libs)A
+
+CPPFLAGS=-Wall -ansi -std=c++11
+
+PROGRAM=mcj_enters
+
+SRCS=$(PROGRAM).cpp
+OBJS=$(subst .cpp,.o,$(SRCS))
+
+DIRS=build
+
+$(shell mkdir -p $(DIRS))
+
+all: $(PROGRAM).e
+
+$(PROGRAM).e: $(OBJS)
+	$(CXX) -o build/$(PROGRAM).e build/$(OBJS) main.cpp
+
+$(PROGRAM).o: 
+	$(CXX) -Wall -g -c $(PROGRAM).cpp -o build/$(PROGRAM).o
+
+main.o:
+	$(CXX) -Wall -g -c main.cpp -o main.o
+
+clean:
+	$(RM) build/$(OBJS)
+
+distclean: clean
+	$(RM) build/$(PROGRAM).e

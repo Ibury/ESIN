@@ -1,0 +1,1 @@
+cat pila.hpp pila.cpp main.cpp | sed '/include "pila.hpp"/d' > solucio.cpp

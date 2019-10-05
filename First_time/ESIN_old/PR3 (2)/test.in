@@ -1,0 +1,11 @@
+init s5D vector<nat>
+insereix_v 1
+insereix_v 2
+insereix_v 3
+insereix_v 4
+insereix_v 3
+##!
+huffman s5D
+#110 111 0 10 
+##!
+s5D destroy

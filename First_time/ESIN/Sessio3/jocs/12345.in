@@ -1,0 +1,21 @@
+##5.1 els cinc elements son diferents [k = 5]: 1 2 3 4 5
+##!----------------------------------------------------------------------
+##!
+init s5A vector<nat>
+insereix_v 1
+insereix_v 2
+insereix_v 3
+insereix_v 4
+insereix_v 5
+insereix_v 6
+insereix_v 1
+insereix_v 1
+insereix_v 1
+insereix_v 2
+##!
+huffman s5A
+#110 111 00 01 10 
+##!
+s5A destroy
+##!
+##!

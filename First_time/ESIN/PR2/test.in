@@ -1,0 +1,17 @@
+init a conjunt<int>
+insereix<int> 11
+insereix<int> 657
+insereix<int> 12
+insereix<int> 11
+insereix<int> 111
+insereix<int> 44
+insereix<int> 87
+insereix<int> 12
+insereix<int> 657
+insereix<int> 87
+a print<int>
+init b conjunt<int>
+insereix<int> 54
+insereix<int> 12
+b print<int>
+b unir<int> a

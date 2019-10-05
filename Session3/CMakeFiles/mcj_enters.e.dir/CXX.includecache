@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/Itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session3/mcj_enters.cpp
+mcj_enters.hpp
+/mnt/c/Users/Itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session3/mcj_enters.hpp
+iostream
+-
+sstream
+-
+
+/mnt/c/Users/Itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session3/mcj_enters.hpp
+iostream
+-
+array
+-
+

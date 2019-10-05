@@ -1,0 +1,3 @@
+#include "diccionari.hpp"
+
+dicc<string, expressio> d;

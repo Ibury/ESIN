@@ -1,0 +1,38 @@
+[1]
+[]
+conte A 2: 0
+conte A -1: 0
+conte A 0: 0
+conte A 1: 1
+max A: 1
+min A: 1
+card A: 1
+----------
+[-1]
+[]
+conte A 2: 0
+conte A -1: 1
+conte A 0: 0
+conte A 1: 0
+max A: -1
+min A: -1
+card A: 1
+----------
+[1 12 21]
+[]
+conte A 21: 1
+conte A 0: 0
+conte A 1: 1
+conte A 12: 1
+max A: 21
+min A: 1
+card A: 3
+----------
+[12 17 21]
+[]
+conte A 12: 1
+conte A 21: 1
+conte A 17: 1
+max A: 21
+min A: 12
+card A: 3

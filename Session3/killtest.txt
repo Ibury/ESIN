@@ -1,0 +1,22 @@
+-1 -2 -3 -4 -4 -6 -1 0 9 10 -100 -3000 -5 10000
+ 
+= B A
+print A
+print B
+- B B
+= A B
+print A
+print B
+- B B
+print B
+restar B B
+= A B
+card A
+card B
+print A
+print B
+insereix A 1
+insereix A 2
+insereix B 3
+card A
+card B

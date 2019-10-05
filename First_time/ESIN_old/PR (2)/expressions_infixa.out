@@ -1,0 +1,177 @@
+22
+18
+(a and (b or (not a)))
+(a and b)
+(a and b)
+(a and b)
+(a and b)
+(a or b)
+(a or b)
+((a or (b and a)) or b)
+0
+0
+-10
+12
+2
+0
+(((x + 3) + (2 * y)) - (((2 * y) + 3) + x))
+(((((x + 3) + (2 * y)) - (2 * y)) + 3) + x)
+((x + 12) + (12 + x))
+(x + 12)
+(12 + x)
+0
+(x + 12)
+((x + 12) * (12 + x))
+0
+0
+(x + 12)
+(12 + x)
+1
+(x + 12)
+0
+(((T == c) or d) and e)
+((T == (c or d)) and e)
+(T == (c or (d and e)))
+((T == c) or (d and e))
+(aa and (bb or (cc == T)))
+(aa and ((bb or cc) == T))
+(((aa and bb) or cc) == T)
+((aa and bb) or (cc == T))
+((((a / b) * c) - d) + e)
+((((a / b) * c) - d) + e)
+((((a / b) * c) - d) + e)
+((((a / b) * c) - d) + e)
+(((a / b) * c) - (d + e))
+((a / b) * (c - (d + e)))
+(a / (b * (c - (d + e))))
+(a1 + (b2 - (c3 * (d4 / e5))))
+(a1 + (b2 - ((c3 * d4) / e5)))
+(a1 + (b2 - ((c3 * d4) / e5)))
+((a1 + b2) - ((c3 * d4) / e5))
+(a1 + (((b2 - c3) * d4) / e5))
+(((a1 + (b2 - c3)) * d4) / e5)
+((a1 + (b2 - c3)) * (d4 / e5))
+((c and d) and (a and b))
+(((c and d) and a) and b)
+((not (c and d)) and (not (a and b)))
+((c and d) and (a and b))
+((((not c) and (not d)) and (not a)) and (not b))
+(((c and d) and a) and b)
+22 
+18 
+and a or b not a 
+and a b 
+and a b 
+and a b 
+and a b 
+or a b 
+or a b 
+or or a and b a b 
+0 
+0 
+-10 
+12 
+2 
+0 
+- + + x 3 * 2 y + + * 2 y 3 x 
++ + - + + x 3 * 2 y * 2 y 3 x 
++ + x 12 + 12 x 
++ x 12 
++ 12 x 
+0 
++ x 12 
+* + x 12 + 12 x 
+0 
+0 
++ x 12 
++ 12 x 
+1 
++ x 12 
+0 
+and or == T c d e 
+and == T or c d e 
+== T or c and d e 
+or == T c and d e 
+and aa or bb == cc T 
+and aa == or bb cc T 
+== or and aa bb cc T 
+or and aa bb == cc T 
++ - * / a b c d e 
++ - * / a b c d e 
++ - * / a b c d e 
++ - * / a b c d e 
+- * / a b c + d e 
+* / a b - c + d e 
+/ a * b - c + d e 
++ a1 - b2 * c3 / d4 e5 
++ a1 - b2 / * c3 d4 e5 
++ a1 - b2 / * c3 d4 e5 
+- + a1 b2 / * c3 d4 e5 
++ a1 / * - b2 c3 d4 e5 
+/ * + a1 - b2 c3 d4 e5 
+* + a1 - b2 c3 / d4 e5 
+and and c d and a b 
+and and and c d a b 
+and not and c d not and a b 
+and and c d and a b 
+and and and not c not d not a not b 
+and and and c d a b 
+22 
+18 
+a b a not or and 
+a b and 
+a b and 
+a b and 
+a b and 
+a b or 
+a b or 
+a b a and or b or 
+0 
+0 
+-10 
+12 
+2 
+0 
+x 3 + 2 y * + 2 y * 3 + x + - 
+x 3 + 2 y * + 2 y * - 3 + x + 
+x 12 + 12 x + + 
+x 12 + 
+12 x + 
+0 
+x 12 + 
+x 12 + 12 x + * 
+0 
+0 
+x 12 + 
+12 x + 
+1 
+x 12 + 
+0 
+T c == d or e and 
+T c d or == e and 
+T c d e and or == 
+T c == d e and or 
+aa bb cc T == or and 
+aa bb cc or T == and 
+aa bb and cc or T == 
+aa bb and cc T == or 
+a b / c * d - e + 
+a b / c * d - e + 
+a b / c * d - e + 
+a b / c * d - e + 
+a b / c * d e + - 
+a b / c d e + - * 
+a b c d e + - * / 
+a1 b2 c3 d4 e5 / * - + 
+a1 b2 c3 d4 * e5 / - + 
+a1 b2 c3 d4 * e5 / - + 
+a1 b2 + c3 d4 * e5 / - 
+a1 b2 c3 - d4 * e5 / + 
+a1 b2 c3 - + d4 * e5 / 
+a1 b2 c3 - + d4 e5 / * 
+c d and a b and and 
+c d and a and b and 
+c d and not a b and not and 
+c d and a b and and 
+c not d not and a not and b not and 
+c d and a and b and 

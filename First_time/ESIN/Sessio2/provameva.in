@@ -1,0 +1,42 @@
+!
+##!------------------------------
+##15 Copias i Inicialitzacions
+##!
+##!------------------------------
+##!
+init a conjunt<int>
+init b conjunt<int>
+a insereix<int> 1
+a insereix<int> 3
+a insereix<int> 5
+a insereix<int> 7
+a insereix<int> 9
+a insereix<int> 11
+a insereix<int> 13
+a insereix<int> 15
+a insereix<int> 17
+b = a
+b ==<int> a
+#true
+b card<int>
+#9
+a destroy
+b card<int>
+#9
+b min<int>
+#1
+b max<int>
+#17
+initcopy a = b
+b ==<int> a
+#true
+a card<int>
+#9
+b destroy
+a card<int>
+#9
+a min<int>
+#1
+a max<int>
+#17
+quit

@@ -1,0 +1,15 @@
+PREFIXA  and a or b not and T a -> INFIXA
+POSTFIXA a b T a and not or and -> PREFIXA
+PREFIXA  and or or F a b or a and b b -> INFIXA
+POSTFIXA a F or b or a b b and or and -> POSTFIXA
+POSTFIXA 8 x 4 3 - * != not x 5 3 + == or -> POSTFIXA
+POSTFIXA -2 5 23 + * 9 12 - / -> INFIXA
+PREFIXA - + + x 3 * 2 y + * 2 y + 3 x -> INFIXA 
+POSTFIXA x 12 + 12 x + / -> INFIXA
+POSTFIXA a T and not b or a and -> PREFIXA
+POSTFIXA b b and a or b F a or or and -> POSTFIXA
+POSTFIXA 3 5 + x == 3 4 - x * 8 != not or -> POSTFIXA
+POSTFIXA 12 9 - 23 5 + -2 * / -> INFIXA
+PREFIXA and and and a b and c d and and c d and a b -> PREFIXA
+PREFIXA and and and a b and c e and and c d and a b -> PREFIXA
+

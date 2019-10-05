@@ -1,0 +1,44 @@
+// --------------------- ATRIBUTS -----------------------------------------------
+
+struct node {
+	token info;
+	node* fe;
+	node *fd;
+};
+
+node* root;
+unsigned int size;
+
+//dicc<string C, bool V>;
+
+// ---------------- METODES PRIVATS ----------------------------------------------
+
+bool equal(const node* a, const node* b) const;
+
+void read_prefix(list<string> & l, node* ptr);
+void read_infix(list<token> & lt, node* ptr);
+
+void infixa_a_postifxa (list<token> &t,const list<token> &l);
+
+
+node* llegeix (list<token>::const_iterator it, list<token>::const_iterator fi);
+
+void print_list (const list<token> &l);
+
+node* copia_expressio(const node* ptr) throw();
+
+void elimina_nodes(node* &ptr);
+
+void pintar (node* ptr);
+
+void pinta (node* ptr);
+
+void simplificar(node* &ptr );
+
+void recull_variables(list<string> & l,const node* n) const;
+
+void get_allocation (const string &v, const expressio &e, node* n,node* act, bool b);
+
+bool existence_variable (const list<string> &l,const node* &n) const;
+
+void get_operations (list<token> & lt,node* n) const;

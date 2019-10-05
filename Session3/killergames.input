@@ -1,0 +1,78 @@
+1
+0
+mata A 1
+max A
+min A
+card A
+insereix A 1
+insereix A 2
+mata A 2
+max A
+min A
+card A
+insereix A 2
+insereix A 3
+mata A 3
+max A
+min A
+card A
+insereix A 3
+mata A 1
+max A
+min A
+card A
+insereix A 1
+insereix A 4
+mata A 4
+max A
+min A
+card A
+insereix A 4
+mata A 3
+max A
+min A
+card A
+insereix A 3
+mata A 2
+max A
+min A
+card A
+insereix A 2
+mata A 1
+max A
+min A
+card A
+== A B
+!= A B
+= B A
+== A B
+!= A B
+mata B 4
+== A B
+!= A B
+card A
+card B
+restar B B
+= A B
+== A B
+!= A B
+card A
+max A
+min A
+card B
+max B
+min B
+insereix A 100
+insereix A 300
+insereix A 499
+copia B A
+print A
+print B
+== A B
+!= A B
+card A
+max A
+min A
+card B
+max B
+min B

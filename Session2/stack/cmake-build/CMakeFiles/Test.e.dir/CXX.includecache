@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/main.cpp
+pila.hpp
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/pila.hpp
+iostream
+-
+sstream
+-
+
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/pila.cpp
+pila.hpp
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/pila.hpp
+
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/pila.hpp
+cstddef
+-
+

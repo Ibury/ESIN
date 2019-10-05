@@ -1,0 +1,9 @@
+#!------------------------------
+##14 Excepcions
+##!
+##!------------------------------
+##!
+init buit conjunt<int>
+max<int>
+#Error::conjunt:10:No es pot calcular el maxim/minim d'un conjunt buit
+

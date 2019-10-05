@@ -1,0 +1,3 @@
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/cmake-build/CMakeFiles/rebuild_cache.dir
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/cmake-build/CMakeFiles/Test.e.dir
+/home/itiel/Insync/iludi95@gmail.com/Google Drive/ESIN/Session2/stack/cmake-build/CMakeFiles/edit_cache.dir

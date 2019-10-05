@@ -1,0 +1,22 @@
+// --------------------- ATRIBUTS -----------------------------------------------
+
+struct node {
+	token info;
+	node* fe;
+	node *fd;
+};
+
+node* root;
+unsigned int size;
+
+//dicc<string C, bool V>;
+
+// ---------------- METODES PRIVATS ----------------------------------------------
+
+bool equal(const node* &a, const node* &b) const;
+
+void read_prefix(list<string> & l, node* ptr);
+void read_infix(list<token> & lt, node* ptr);
+
+
+node* llegeix (list<token>::const_iterator it, list<token>::const_iterator fi);
