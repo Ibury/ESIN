@@ -54,8 +54,6 @@ public:
   // espais entre els elements i tancant la seqüència amb corxets.
   void print(ostream &os) const;
 
-  void test(int val);
-
 private:
   // Aqui van els atributs i metodes privats
 
@@ -304,29 +302,6 @@ void mcj_enters::insereix(int e)
 //Cost: Θ(n)
 void mcj_enters::unir(const mcj_enters &B)
 {
-    mcj_enters tmp(*this + B);
-    copy(tmp);
-}
-
-//Cost: Θ(n)
-void mcj_enters::intersectar(const mcj_enters &B)
-{
-    mcj_enters tmp(*this * B);
-    copy(tmp);
-}
-
-//Cost: Θ(n)
-void mcj_enters::restar(const mcj_enters &B)
-{
-    mcj_enters tmp(*this - B);
-    copy(tmp);
-}
-
-//Cost: Θ(3n)
-mcj_enters mcj_enters::operator+(const mcj_enters &B) const
-/*Pre: Conjunt d'enters.*/
-/*Post: Crea un nou conjunt i uneix el conjunt del p.i amb B.*/
-{
     mcj_enters *tmp = new mcj_enters();
 
     if (card() > 0 and B.card() > 0)
@@ -339,41 +314,107 @@ mcj_enters mcj_enters::operator+(const mcj_enters &B) const
             if (i->info > j->info)
             {
                 tmp->insereix(j->info);
-                j = j->next;
+                forward(j);
             }
             else if (i->info < j->info)
             {
                 tmp->insereix(i->info);
-                i = i->next;
+                forward(i);
             }
             else
             {
                 tmp->insereix(i->info);
-                i = i->next;
-                j = j->next;
+                forward(i);
+                forward(j);
             }
         }
 
         while (i != nullptr)
         {
             tmp->insereix(i->info);
-            i = i->next;
+            forward(i);
         }
 
         while (j != nullptr)
         {
             tmp->insereix(j->info);
-            j = j->next;
+            forward(j);
         }
 
-        return *tmp;
+        // Easy alternative way to exchange pointers.
+        copy(*tmp);
     }
     else if (card() == 0)
     {
-        return B;
+        copy(B);
+    }
+}
+
+//Cost: Θ(n)
+void mcj_enters::intersectar(const mcj_enters &B)
+{
+    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+
+    while (i != nullptr and j != nullptr)
+    {
+
+        if (i->info < j->info)
+        {
+            remove(prev, i);
+            forward(i);
+        }
+        else if (i->info > j->info)
+            forward(j);
+        else
+        {
+            forward(prev);
+            forward(i);
+            forward(j);
+        }
     }
 
-    return *this;
+    while (i != nullptr)
+    {
+        remove(prev, i);
+        forward(i);
+    }
+}
+
+//Cost: Θ(n)
+void mcj_enters::restar(const mcj_enters &B)
+{
+    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+
+    while (i != nullptr and j != nullptr)
+    {
+        if (i->info < j->info)
+        {
+            forward(prev);
+            forward(i);
+        }
+        else if (i->info > j->info)
+        {
+            forward(j);
+        }
+        else
+        {
+            remove(prev, i);
+            forward(i);
+            forward(j);
+        }
+    }
+}
+
+//Cost: Θ(3n)
+mcj_enters mcj_enters::operator+(const mcj_enters &B) const
+/*Pre: Conjunt d'enters.*/
+/*Post: Crea un nou conjunt i uneix el conjunt del p.i amb B.*/
+{
+    mcj_enters *C = new mcj_enters(*this);
+
+    C->unir(B);
+
+    return *C;
 }
 
 //Cost: Θ(3n)
@@ -382,28 +423,11 @@ mcj_enters mcj_enters::operator*(const mcj_enters &B) const
 /*Post: Crea un nou conjunt i intersecta el conjunt del p.i amb B.*/
 {
 
-    mcj_enters tmp = mcj_enters();
+    mcj_enters *C = new mcj_enters(*this);
 
-    node *i = m_first, *j = B.m_first;
+    C->intersectar(B);
 
-    while (i != nullptr and j != nullptr)
-    {
-
-        if (i->info < j->info)
-        {
-            i = i->next;
-        }
-        else if (i->info > j->info)
-            j = j->next;
-        else
-        {
-            tmp.insereix(i->info);
-            i = i->next;
-            j = j->next;
-        }
-    }
-
-    return tmp;
+    return *C;
 }
 
 //Cost: Θ(3n)
@@ -411,38 +435,12 @@ mcj_enters mcj_enters::operator-(const mcj_enters &B) const
 /*Pre: Conjunt d'enters.*/
 /*Post: Crea un nou conjunt i resta el conjunt del p.i amb B.*/
 {
-    mcj_enters tmp = mcj_enters();
 
-    node *i = m_first, *j = B.m_first;
+    mcj_enters *C = new mcj_enters(*this);
 
-    if (i == nullptr or j == nullptr)
-        return *this;
+    C->restar(B);
 
-    while (i != nullptr and j != nullptr)
-    {
-        if (i->info < j->info)
-        {
-            tmp.insereix(i->info);
-            i = i->next;
-        }
-        else if (i->info > j->info)
-        {
-            j = j->next;
-        }
-        else
-        {
-            i = i->next;
-            j = j->next;
-        }
-    }
-
-    while (i != nullptr)
-    {
-        tmp.insereix(i->info);
-        i = i->next;
-    }
-
-    return tmp;
+    return *C;
 }
 
 //Cost: Θ(n)
@@ -570,18 +568,4 @@ void mcj_enters::print(ostream &os) const
     }
 
     os << "]";
-}
-
-void mcj_enters::test(int val)
-{
-    node *prev = m_ghost, *curr = m_first;
-
-    while (curr != nullptr)
-    {
-        if (curr->info == val)
-            remove(prev, curr);
-
-        forward(prev);
-        forward(curr);
-    }
 }
