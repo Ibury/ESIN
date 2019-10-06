@@ -54,6 +54,8 @@ public:
   // espais entre els elements i tancant la seqüència amb corxets.
   void print(ostream &os) const;
 
+  void test(int val);
+
 private:
   // Aqui van els atributs i metodes privats
 
@@ -165,17 +167,17 @@ void mcj_enters::copy(const mcj_enters &cj)
     }
     */
 
-    mcj_enters *C = new mcj_enters();
+    mcj_enters C = mcj_enters();
 
     node *B = cj.m_first;
 
     while (B != nullptr)
     {
-        C->insereix(B->info);
+        C.insereix(B->info);
         forward(B);
     }
 
-    swap(*C);
+    swap(C);
 }
 
 //Cost: Θ(1)
@@ -302,7 +304,7 @@ void mcj_enters::insereix(int e)
 //Cost: Θ(n)
 void mcj_enters::unir(const mcj_enters &B)
 {
-    mcj_enters *tmp = new mcj_enters();
+    mcj_enters tmp = mcj_enters();
 
     if (card() > 0 and B.card() > 0)
     {
@@ -313,17 +315,17 @@ void mcj_enters::unir(const mcj_enters &B)
         {
             if (i->info > j->info)
             {
-                tmp->insereix(j->info);
+                tmp.insereix(j->info);
                 forward(j);
             }
             else if (i->info < j->info)
             {
-                tmp->insereix(i->info);
+                tmp.insereix(i->info);
                 forward(i);
             }
             else
             {
-                tmp->insereix(i->info);
+                tmp.insereix(i->info);
                 forward(i);
                 forward(j);
             }
@@ -331,18 +333,17 @@ void mcj_enters::unir(const mcj_enters &B)
 
         while (i != nullptr)
         {
-            tmp->insereix(i->info);
+            tmp.insereix(i->info);
             forward(i);
         }
 
         while (j != nullptr)
         {
-            tmp->insereix(j->info);
+            tmp.insereix(j->info);
             forward(j);
         }
 
-        // Easy alternative way to exchange pointers.
-        copy(*tmp);
+        copy(tmp);
     }
     else if (card() == 0)
     {
@@ -410,11 +411,11 @@ mcj_enters mcj_enters::operator+(const mcj_enters &B) const
 /*Pre: Conjunt d'enters.*/
 /*Post: Crea un nou conjunt i uneix el conjunt del p.i amb B.*/
 {
-    mcj_enters *C = new mcj_enters(*this);
+    mcj_enters C = mcj_enters(*this);
 
-    C->unir(B);
+    C.unir(B);
 
-    return *C;
+    return C;
 }
 
 //Cost: Θ(3n)
@@ -423,11 +424,11 @@ mcj_enters mcj_enters::operator*(const mcj_enters &B) const
 /*Post: Crea un nou conjunt i intersecta el conjunt del p.i amb B.*/
 {
 
-    mcj_enters *C = new mcj_enters(*this);
+    mcj_enters C = mcj_enters(*this);
 
-    C->intersectar(B);
+    C.intersectar(B);
 
-    return *C;
+    return C;
 }
 
 //Cost: Θ(3n)
@@ -436,11 +437,11 @@ mcj_enters mcj_enters::operator-(const mcj_enters &B) const
 /*Post: Crea un nou conjunt i resta el conjunt del p.i amb B.*/
 {
 
-    mcj_enters *C = new mcj_enters(*this);
+    mcj_enters C = mcj_enters(*this);
 
-    C->restar(B);
+    C.restar(B);
 
-    return *C;
+    return C;
 }
 
 //Cost: Θ(n)
@@ -487,8 +488,8 @@ mcj_enters &mcj_enters::operator=(const mcj_enters &cj)
 
     if (this != &cj)
     {
-        mcj_enters *C = new mcj_enters(cj);
-        swap(*C);
+        mcj_enters C = mcj_enters(cj);
+        swap(C);
     }
 
     return *this;
@@ -568,4 +569,18 @@ void mcj_enters::print(ostream &os) const
     }
 
     os << "]";
+}
+
+void mcj_enters::test(int val)
+{
+    node *prev = m_ghost, *curr = m_first;
+
+    while (curr != nullptr)
+    {   
+        if (curr->info == val)
+            remove(prev, curr);
+
+        forward(prev);
+        forward(curr);
+    } 
 }
