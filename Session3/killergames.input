@@ -76,3 +76,23 @@ min A
 card B
 max B
 min B
+intersectar A A
++ A B
++ B A
+- A B
+- B A
+* A B
+* B A
+insereix B 50
+insereix B 199
+insereix B 33
++ A B
++ B A
+- A B
+- B A
+* A B
+* B A
+restar A A
+restar A A
+intersectar A A
+unir A A
