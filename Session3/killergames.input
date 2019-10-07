@@ -94,5 +94,18 @@ insereix B 33
 * B A
 restar A A
 restar A A
+card A
+max A
+min A
 intersectar A A
 unir A A
+insereix A -1
+insereix A -1
+insereix A -1
+restar A A
+insereix A -1
+insereix A -1
+insereix A -1
+intersectar A B
+restar B B
+intersectar A B

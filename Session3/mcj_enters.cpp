@@ -264,45 +264,47 @@ void mcj_enters::unir(const mcj_enters &B)
 //Cost: Θ(n)
 void mcj_enters::intersectar(const mcj_enters &B)
 {
-    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+    mcj_enters tmp;
 
-    while (i != nullptr and j != nullptr)
+    if (card() > 0 and B.card() > 0)
     {
+        node *i = m_first, *j = B.m_first;
 
-        if (i->info < j->info)
+        while (i != nullptr and j != nullptr)
         {
-            remove(prev, i);
-            forward(i);
-        }
-        else if (i->info > j->info)
-            forward(j);
-        else
-        {
-            forward(prev);
-            forward(i);
-            forward(j);
+
+            if (i->info < j->info)
+            {
+                forward(i);
+            }
+            else if (i->info > j->info)
+                forward(j);
+            else
+            {
+                tmp.insereix(i->info);
+                forward(i);
+                forward(j);
+            }
         }
     }
 
-    while (i != nullptr)
-    {
-        remove(prev, i);
-        forward(i);
-    }
+    swap(tmp);
 }
 
 //Cost: Θ(n)
 void mcj_enters::restar(const mcj_enters &B)
 {
-    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+    mcj_enters tmp;
 
-    if (this != &B)
+    if (card() > 0 and B.card() > 0)
     {
+        node *i = m_first, *j = B.m_first;
+
         while (i != nullptr and j != nullptr)
         {
             if (i->info < j->info)
             {
-                forward(prev);
+                tmp.insereix(i->info);
                 forward(i);
             }
             else if (i->info > j->info)
@@ -311,21 +313,19 @@ void mcj_enters::restar(const mcj_enters &B)
             }
             else
             {
-                remove(prev, i);
                 forward(i);
                 forward(j);
             }
         }
-    }
-    else
-    {
+
         while (i != nullptr)
         {
-            remove(prev, i);
+            tmp.insereix(i->info);
             forward(i);
         }
-    }
-    
+
+        swap(tmp);
+    }    
 }
 
 //Cost: Θ(3n)

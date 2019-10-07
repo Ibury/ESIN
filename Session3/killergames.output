@@ -1,0 +1,116 @@
+[1]
+[0]
+mata A 1: []
+max A: 0
+min A: 0
+card A: 0
+insereix A 1: [1]
+insereix A 2: [1 2]
+mata A 2: [1]
+max A: 1
+min A: 1
+card A: 1
+insereix A 2: [1 2]
+insereix A 3: [1 2 3]
+mata A 3: [1 2]
+max A: 2
+min A: 1
+card A: 2
+insereix A 3: [1 2 3]
+mata A 1: [2 3]
+max A: 3
+min A: 2
+card A: 2
+insereix A 1: [1 2 3]
+insereix A 4: [1 2 3 4]
+mata A 4: [1 2 3]
+max A: 3
+min A: 1
+card A: 3
+insereix A 4: [1 2 3 4]
+mata A 3: [1 2 4]
+max A: 4
+min A: 1
+card A: 3
+insereix A 3: [1 2 3 4]
+mata A 2: [1 3 4]
+max A: 4
+min A: 1
+card A: 3
+insereix A 2: [1 2 3 4]
+mata A 1: [2 3 4]
+max A: 4
+min A: 2
+card A: 3
+== A B: 0
+!= A B: 1
+= B A: 
+A: [2 3 4]
+B: [2 3 4]
+== A B: 1
+!= A B: 0
+mata B 4: [2 3]
+== A B: 0
+!= A B: 1
+card A: 3
+card B: 2
+restar B B: []
+= A B: 
+A: []
+B: []
+== A B: 1
+!= A B: 0
+card A: 0
+max A: 0
+min A: 0
+card B: 0
+max B: 0
+min B: 0
+insereix A 100: [100]
+insereix A 300: [100 300]
+insereix A 499: [100 300 499]
+copia B A: A: [100 300 499]
+B: [100 300 499]
+print A: [100 300 499]
+print B: [100 300 499]
+== A B: 1
+!= A B: 0
+card A: 3
+max A: 499
+min A: 100
+card B: 3
+max B: 499
+min B: 100
+intersectar A A: [100 300 499]
++ A B: [100 300 499]
++ B A: [100 300 499]
+- A B: []
+- B A: []
+* A B: [100 300 499]
+* B A: [100 300 499]
+insereix B 50: [50 100 300 499]
+insereix B 199: [50 100 199 300 499]
+insereix B 33: [33 50 100 199 300 499]
++ A B: [33 50 100 199 300 499]
++ B A: [33 50 100 199 300 499]
+- A B: []
+- B A: [33 50 199]
+* A B: [100 300 499]
+* B A: [100 300 499]
+restar A A: []
+restar A A: []
+card A: 0
+max A: 0
+min A: 0
+intersectar A A: []
+unir A A: []
+insereix A -1: [-1]
+insereix A -1: [-1 -1]
+insereix A -1: [-1 -1 -1]
+restar A A: []
+insereix A -1: [-1]
+insereix A -1: [-1 -1]
+insereix A -1: [-1 -1 -1]
+intersectar A B: []
+restar B B: []
+intersectar A B: []
