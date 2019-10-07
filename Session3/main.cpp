@@ -159,7 +159,7 @@ int main()
       else if (comanda == "mata")
       {
         ss >> cjt >> n;
-        c[cjt - 'A'].test(n);
+        //c[cjt - 'A'].test(n);
         c[cjt - 'A'].print(cout);
       }
       cout << endl;

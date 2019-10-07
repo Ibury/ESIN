@@ -54,8 +54,6 @@ public:
   // espais entre els elements i tancant la seqüència amb corxets.
   void print(ostream &os) const;
 
-  void test(int val);
-
 private:
   // Aqui van els atributs i metodes privats
 
@@ -104,8 +102,6 @@ mcj_enters::~mcj_enters()
         delete prev;
         prev = m_first;
     }
-
-    m_last = m_first = nullptr;
 }
 
 //Cost: Θ(1)
@@ -119,7 +115,6 @@ void mcj_enters::setup()
 //Cost: Θ(n)
 void mcj_enters::copy(const mcj_enters &cj)
 {
-    /*
     node *tmpA = m_first;
     node *tmpB = cj.m_first;
     node *prev = m_ghost;
@@ -160,24 +155,14 @@ void mcj_enters::copy(const mcj_enters &cj)
             }
         }
     }
-    else // It means that B is empty, therefore, we're going to remove all elements using swap trick.
+    else // It means that B is empty, therefore, we're going to remove all elements from p.i.
     {
-        mcj_enters C = mcj_enters();
-        swap(C);
+        while (tmpA != nullptr)
+        {
+            remove(prev, tmpA);
+            forward(tmpA);
+        }
     }
-    */
-
-    mcj_enters C = mcj_enters();
-
-    node *B = cj.m_first;
-
-    while (B != nullptr)
-    {
-        C.insereix(B->info);
-        forward(B);
-    }
-
-    swap(C);
 }
 
 //Cost: Θ(1)
@@ -242,7 +227,8 @@ void mcj_enters::remove(node *&previous, node *&current)
         previous->next = current->next;
     }
 
-    delete current;
+    if (current != nullptr)
+        delete current;
     current = previous;
 
     if (m_ghost != nullptr and m_ghost->info > 0)
@@ -266,7 +252,7 @@ void mcj_enters::insereix(int e)
             m_ghost->next = new node{e, m_first};
             m_first = m_ghost->next;
         }
-        else if (e > m_last->info)
+        else if (e >= m_last->info)
         {
             insertAtEnd(e);
         }
@@ -278,7 +264,6 @@ void mcj_enters::insereix(int e)
 
             while (aux != nullptr and not inserted)
             {
-
                 // FIXME: Maybe it's here the focus of the problem.
                 if (aux != nullptr)
                 {
@@ -304,11 +289,10 @@ void mcj_enters::insereix(int e)
 //Cost: Θ(n)
 void mcj_enters::unir(const mcj_enters &B)
 {
-    mcj_enters tmp = mcj_enters();
+    mcj_enters tmp;
 
     if (card() > 0 and B.card() > 0)
     {
-
         node *i = m_first, *j = B.m_first;
 
         while (i != nullptr and j != nullptr)
@@ -354,55 +338,67 @@ void mcj_enters::unir(const mcj_enters &B)
 //Cost: Θ(n)
 void mcj_enters::intersectar(const mcj_enters &B)
 {
-    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+    mcj_enters tmp;
 
-    while (i != nullptr and j != nullptr)
+    if (card() > 0 and B.card() > 0)
     {
+        node *i = m_first, *j = B.m_first;
 
-        if (i->info < j->info)
+        while (i != nullptr and j != nullptr)
         {
-            remove(prev, i);
-            forward(i);
-        }
-        else if (i->info > j->info)
-            forward(j);
-        else
-        {
-            forward(prev);
-            forward(i);
-            forward(j);
+
+            if (i->info < j->info)
+            {
+                forward(i);
+            }
+            else if (i->info > j->info)
+                forward(j);
+            else
+            {
+                tmp.insereix(i->info);
+                forward(i);
+                forward(j);
+            }
         }
     }
 
-    while (i != nullptr)
-    {
-        remove(prev, i);
-        forward(i);
-    }
+    swap(tmp);
 }
 
 //Cost: Θ(n)
 void mcj_enters::restar(const mcj_enters &B)
 {
-    node *i = m_first, *j = B.m_first, *prev = m_ghost;
+    mcj_enters tmp;
 
-    while (i != nullptr and j != nullptr)
+    if (card() > 0 and B.card() > 0)
     {
-        if (i->info < j->info)
+        node *i = m_first, *j = B.m_first;
+
+        while (i != nullptr and j != nullptr)
         {
-            forward(prev);
+            if (i->info < j->info)
+            {
+                tmp.insereix(i->info);
+                forward(i);
+            }
+            else if (i->info > j->info)
+            {
+                forward(j);
+            }
+            else
+            {
+                forward(i);
+                forward(j);
+            }
+        }
+
+        while (i != nullptr)
+        {
+            tmp.insereix(i->info);
             forward(i);
         }
-        else if (i->info > j->info)
-        {
-            forward(j);
-        }
-        else
-        {
-            remove(prev, i);
-            forward(i);
-            forward(j);
-        }
+
+        swap(tmp);
     }
 }
 
@@ -411,7 +407,7 @@ mcj_enters mcj_enters::operator+(const mcj_enters &B) const
 /*Pre: Conjunt d'enters.*/
 /*Post: Crea un nou conjunt i uneix el conjunt del p.i amb B.*/
 {
-    mcj_enters C = mcj_enters(*this);
+    mcj_enters C(*this);
 
     C.unir(B);
 
@@ -423,8 +419,7 @@ mcj_enters mcj_enters::operator*(const mcj_enters &B) const
 /*Pre: Conjunt d'enters.*/
 /*Post: Crea un nou conjunt i intersecta el conjunt del p.i amb B.*/
 {
-
-    mcj_enters C = mcj_enters(*this);
+    mcj_enters C(*this);
 
     C.intersectar(B);
 
@@ -436,8 +431,7 @@ mcj_enters mcj_enters::operator-(const mcj_enters &B) const
 /*Pre: Conjunt d'enters.*/
 /*Post: Crea un nou conjunt i resta el conjunt del p.i amb B.*/
 {
-
-    mcj_enters C = mcj_enters(*this);
+    mcj_enters C(*this);
 
     C.restar(B);
 
@@ -460,12 +454,8 @@ bool mcj_enters::operator==(const mcj_enters &B) const
         if (tmpA->info != tmpB->info)
             same = false;
 
-        // FIXME: Test
-        if (tmpA != nullptr)
-            tmpA = tmpA->next;
-
-        if (tmpB != nullptr)
-            tmpB = tmpB->next;
+        tmpA = tmpA->next;
+        tmpB = tmpB->next;
     }
 
     return same;
@@ -488,7 +478,7 @@ mcj_enters &mcj_enters::operator=(const mcj_enters &cj)
 
     if (this != &cj)
     {
-        mcj_enters C = mcj_enters(cj);
+        mcj_enters C(cj);
         swap(C);
     }
 
@@ -498,30 +488,18 @@ mcj_enters &mcj_enters::operator=(const mcj_enters &cj)
 //Cost: Θ(1)
 int mcj_enters::max() const
 {
-    // FIXME: It shouldn't happen never... unless the p.i it would be empty.
-    if (m_last == nullptr)
-        return 0;
-
     return m_last->info;
 }
 
 //Cost: Θ(1)
 int mcj_enters::min() const
 {
-    // FIXME: It shouldn't happen never... unless the p.i it would be empty.
-    if (m_first == nullptr)
-        return 0;
-
     return m_first->info;
 }
 
 //Cost: Θ(1)
 int mcj_enters::card() const
 {
-    // FIXME: It shouldn't happen never...
-    if (m_ghost == nullptr)
-        return 0;
-
     return m_ghost->info;
 }
 
@@ -539,9 +517,7 @@ bool mcj_enters::conte(int e) const
             if (tmp->info == e)
                 found = true;
 
-            // FIXME: Test
-            if (tmp != nullptr)
-                tmp = tmp->next;
+            tmp = tmp->next;
         }
     }
 
@@ -569,18 +545,4 @@ void mcj_enters::print(ostream &os) const
     }
 
     os << "]";
-}
-
-void mcj_enters::test(int val)
-{
-    node *prev = m_ghost, *curr = m_first;
-
-    while (curr != nullptr)
-    {   
-        if (curr->info == val)
-            remove(prev, curr);
-
-        forward(prev);
-        forward(curr);
-    } 
 }

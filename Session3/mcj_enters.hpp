@@ -54,8 +54,6 @@ public:
   // espais entre els elements i tancant la seqüència amb corxets.
   void print(ostream &os) const;
 
-  void test(int val);
-
 private:
   // Aqui van els atributs i metodes privats
 
