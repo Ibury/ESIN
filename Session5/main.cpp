@@ -3,11 +3,10 @@
 #include <vector>
 #include "abin.hpp"
 using namespace std;
-using iter = Abin<int>::iterador;
 
 //Escriptura
 std::string dep = "";
-void pinta(const Abin<int> &a, iter f, iter l)
+void pinta(const Abin<int> &a, Abin<int>::iterador f, Abin<int>::iterador l)
 {
 
     std::string d1 = dep;
@@ -53,11 +52,11 @@ Abin<int> mount(vector<int> &v, unsigned int &pos)
 
 Abin<int> mount(vector<int> &v)
 {
-    auto pos = 0U;
+    unsigned int pos = 0U;
     return mount(v, pos);
 }
 
-void printPostorder(Abin<int> &a, iter f, iter l)
+void printPostorder(Abin<int> &a, Abin<int>::iterador f, Abin<int>::iterador l)
 {
     if (f != l)
     {
@@ -67,7 +66,7 @@ void printPostorder(Abin<int> &a, iter f, iter l)
     }
 }
 
-void printInorder(Abin<int> &a, iter f, iter l)
+void printInorder(Abin<int> &a, Abin<int>::iterador f, Abin<int>::iterador l)
 {
     if (f != l)
     {
@@ -79,18 +78,18 @@ void printInorder(Abin<int> &a, iter f, iter l)
 
 void print(Abin<int> &a)
 {
-    iter f = a.arrel();
-    iter l = a.final();
+    Abin<int>::iterador f = a.arrel();
+    Abin<int>::iterador l = a.final();
 
-    cout << "pos: ";
+    cout << "pos:";
     printPostorder(a, f, l);
     cout << endl;
-    cout << "ino: ";
+    cout << "ino:";
     printInorder(a, f, l);
     cout << endl;
 }
 
-int high(const iter &f, const iter &l)
+int high(const Abin<int>::iterador &f, const Abin<int>::iterador &l)
 {
     if (f == l)
     {
@@ -102,7 +101,7 @@ int high(const iter &f, const iter &l)
     }
 }
 
-int count(const iter &f, const iter &l)
+int count(const Abin<int>::iterador &f, const Abin<int>::iterador &l)
 {
     if (f == l)
     {
@@ -126,24 +125,24 @@ int main()
 
         int x;
 
-        cout << "Entrando valores: " << line << endl;
+        //cout << "Entrando valores: " << line << endl;
 
         while (ss >> x)
         {
             v.push_back(x);
         }
 
-        cout << "Montando arbol" << endl;
+        //cout << "Montando arbol" << endl;
         a = mount(v);
 
-        cout << "Recorriendo arbol" << endl;
+        //cout << "Recorriendo arbol" << endl;
         print(a);
 
         v.clear();
 
-        cout << "Altura del arbol: " << high(a.arrel(), a.final()) << endl;
-        cout << "Nodos del arbol: " << count(a.arrel(), a.final()) << endl;
+        //cout << "Altura del arbol: " << high(a.arrel(), a.final()) << endl;
+        //cout << "Nodos del arbol: " << count(a.arrel(), a.final()) << endl;
 
-        pinta(a);
+        //pinta(a);
     }
 }
