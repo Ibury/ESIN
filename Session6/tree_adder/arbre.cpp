@@ -105,20 +105,14 @@ typename Arbre<T>::node *Arbre<T>::suma_arbres(node *a1, node *a2)
 
     a1->info += a2->info;
 
-    if (a1->primf == NULL and a2->primf != NULL)
+    while (a1->primf == NULL and a2->primf != NULL)
     {
-      while (a1->primf == NULL and a2->primf != NULL)
-      {
-        a1->primf = new node;
-        a1->primf->primf = a1->primf->seggerm = NULL;
-        a1->primf->info = a2->primf->info;
-        a1 = a1->primf;
-        a2 = a2->primf;
-      }
-    }
+      a1->primf = new node;
+      a1->primf->primf = a1->primf->seggerm = NULL;
+      a1->primf->info = a2->primf->info;
+      a1 = a1->primf;
+      a2 = a2->primf;
 
-    if (a1->seggerm == NULL and a2->seggerm != NULL)
-    {
       while (a1->seggerm == NULL and a2->seggerm != NULL)
       {
         a1->seggerm = new node;
@@ -126,6 +120,24 @@ typename Arbre<T>::node *Arbre<T>::suma_arbres(node *a1, node *a2)
         a1->seggerm->info = a2->seggerm->info;
         a1 = a1->seggerm;
         a2 = a2->seggerm;
+      }
+    }
+
+    while (a1->seggerm == NULL and a2->seggerm != NULL)
+    {
+      a1->seggerm = new node;
+      a1->seggerm->primf = a1->seggerm->seggerm = NULL;
+      a1->seggerm->info = a2->seggerm->info;
+      a1 = a1->seggerm;
+      a2 = a2->seggerm;
+
+      while (a1->primf == NULL and a2->primf != NULL)
+      {
+        a1->primf = new node;
+        a1->primf->primf = a1->primf->seggerm = NULL;
+        a1->primf->info = a2->primf->info;
+        a1 = a1->primf;
+        a2 = a2->primf;
       }
     }
   }
