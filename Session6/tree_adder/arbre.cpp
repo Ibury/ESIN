@@ -101,41 +101,26 @@ typename Arbre<T>::node *Arbre<T>::suma_arbres(node *a1, node *a2)
   if (a1 != NULL and a2 != NULL)
   {
 
-    suma_arbres(a1->primf, a2->primf);
-    suma_arbres(a1->seggerm, a2->seggerm);
-
-    a1->info += a2->info;
-
     if (a1->primf == NULL and a2->primf != NULL)
     {
-
-      node *a = a1->primf, *b = a2->primf;
-
-      while (b != NULL)
-      {
-        a = new node;
-        a->primf = a->seggerm = NULL;
-        a->info = b->info;
-
-        a = a->primf;
-        b = b->primf;
-      }
+      a1->primf = new node;
+      a1->primf->primf = a1->primf->seggerm = NULL;
+      a1->primf->info = a2->primf->info;
+      suma_arbres(a1->primf, a2->primf);
     }
 
     if (a1->seggerm == NULL and a2->seggerm != NULL)
     {
-      node *a = a1->seggerm, *b = a2->seggerm;
-
-      while (b != NULL)
-      {
-        a = new node;
-        a->primf = a->seggerm = NULL;
-        a->info = b->info;
-
-        a = a->seggerm;
-        b = b->seggerm;
-      }
+      a1->seggerm = new node;
+      a1->seggerm->primf = a1->seggerm->seggerm = NULL;
+      a1->seggerm->info = a2->seggerm->info;
+      suma_arbres(a1->seggerm, a2->seggerm);
     }
+
+    suma_arbres(a1->primf, a2->primf);
+    suma_arbres(a1->seggerm, a2->seggerm);
+
+    a1->info += a2->info;
   }
 
   return a1;
