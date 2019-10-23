@@ -96,50 +96,44 @@ Arbre<T> Arbre<T>::operator+(const Arbre<T> &a)
 }
 
 template <typename T>
+void Arbre<T>::add_childs(node *a1, node *a2)
+{
+  if (a1->primf == NULL and a2->primf != NULL)
+  {
+    a1->primf = new node;
+    a1->primf->primf = a1->primf->seggerm = NULL;
+    a1->primf->info = a2->primf->info;
+    add_childs(a1->primf, a2->primf);
+    add_brothers(a1->primf, a2->primf);
+  }
+}
+
+template <typename T>
+void Arbre<T>::add_brothers(node *a1, node *a2)
+{
+  if (a1->seggerm == NULL and a2->seggerm != NULL)
+  {
+    a1->seggerm = new node;
+    a1->seggerm->primf = a1->seggerm->seggerm = NULL;
+    a1->seggerm->info = a2->seggerm->info;
+    add_brothers(a1->seggerm, a2->seggerm);
+    add_childs(a1->seggerm, a2->seggerm);
+  }
+}
+
+template <typename T>
 typename Arbre<T>::node *Arbre<T>::suma_arbres(node *a1, node *a2)
 {
   if (a1 != NULL and a2 != NULL)
   {
+
     suma_arbres(a1->primf, a2->primf);
     suma_arbres(a1->seggerm, a2->seggerm);
 
     a1->info += a2->info;
 
-    while (a1->primf == NULL and a2->primf != NULL)
-    {
-      a1->primf = new node;
-      a1->primf->primf = a1->primf->seggerm = NULL;
-      a1->primf->info = a2->primf->info;
-      a1 = a1->primf;
-      a2 = a2->primf;
-
-      while (a1->seggerm == NULL and a2->seggerm != NULL)
-      {
-        a1->seggerm = new node;
-        a1->seggerm->primf = a1->seggerm->seggerm = NULL;
-        a1->seggerm->info = a2->seggerm->info;
-        a1 = a1->seggerm;
-        a2 = a2->seggerm;
-      }
-    }
-
-    while (a1->seggerm == NULL and a2->seggerm != NULL)
-    {
-      a1->seggerm = new node;
-      a1->seggerm->primf = a1->seggerm->seggerm = NULL;
-      a1->seggerm->info = a2->seggerm->info;
-      a1 = a1->seggerm;
-      a2 = a2->seggerm;
-
-      while (a1->primf == NULL and a2->primf != NULL)
-      {
-        a1->primf = new node;
-        a1->primf->primf = a1->primf->seggerm = NULL;
-        a1->primf->info = a2->primf->info;
-        a1 = a1->primf;
-        a2 = a2->primf;
-      }
-    }
+    add_childs(a1, a2);
+    add_brothers(a1, a2);
   }
 
   return a1;

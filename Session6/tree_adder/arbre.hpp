@@ -17,6 +17,12 @@ private:
   static node *copia_arbre(node *p);
   static void destrueix_arbre(node *p) throw();
 
+  // My private methods.
+  //------------------------------------------------------------------------------------------
+  static void add_childs(node *a1, node *a2);
+  static void add_brothers(node *a1, node *a2);
+  //------------------------------------------------------------------------------------------
+
 public:
   // Construeix un Arbre format per un únic node que conté a x.
   Arbre(const T &x);
@@ -41,6 +47,7 @@ public:
   static void preordre(node *n);
   // Escriu una línia amb el recorregut en preordre de l’arbre general
   // que apunta n. Cada element ha de sortir precedit d’un espai.
+  //------------------------------------------------------------------------------------------
 
   // Iterador sobre arbre general.
   friend class iterador;
