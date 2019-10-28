@@ -61,7 +61,7 @@ Arbre<int> mount(const vector<Node> &v, unsigned int pos)
 
         Arbre<int> a(v[pos].valor);
 
-        for (int i=v[pos].fill.size()-1; i>=0; --i)
+        for (int i = v[pos].fill.size() - 1; i >= 0; --i)
         {
             Arbre<int> b(mount(v, v[pos].fill[i]));
             a.afegir_fill(b);
@@ -76,6 +76,22 @@ Arbre<int> mount(const vector<Node> &v)
     unsigned int pos = 0;
 
     return mount(v, pos);
+}
+
+void draw(const Arbre<int>::iterador &f, const Arbre<int>::iterador &l, const string &ident)
+{
+    if (f != l)
+    {
+        cout << ident;
+        cout << *f << endl;
+        draw(f.primogenit(), l, ident + "\t");
+        draw(f.seg_germa(), l, ident);
+    }
+}
+
+void draw(const Arbre<int> &a)
+{
+    draw(a.arrel(), a.final(), "");
 }
 
 int main()
@@ -93,4 +109,5 @@ int main()
     // Build tree
     Arbre<int> a(mount(v));
     print(a);
+    draw(a);
 }

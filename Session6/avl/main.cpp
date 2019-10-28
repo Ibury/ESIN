@@ -39,15 +39,19 @@ pair<int, int> test(istringstream &ss, bool &es_avl)
                         diferencia = res.first;
                     else
                         diferencia = max(diferencia, res.first) - min(diferencia, res.first);
+                }else
+                {
+                    diferencia = 1;
                 }
 
-                if (res.second > 1 and diferencia > 1)
-                    es_avl = false;
+                if (total > 1 and z > 2 and (diferencia < 0 or diferencia > 1))
+                es_avl = false;
+                
             }
 
             ++total;
 
-            if (total > 1 and diferencia > 1)
+            if (total > 1 and (diferencia < 0 or diferencia > 1))
                 es_avl = false;
 
             //cout << "[RAIZ] (" << z << ") Altura: " << maxAltura+1 << ", nodos: " << total << ", DiffAltura " << diffAltura << endl;
