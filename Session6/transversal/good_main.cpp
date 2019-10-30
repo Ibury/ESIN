@@ -94,81 +94,6 @@ void draw(const Arbre<int> &a)
     draw(a.arrel(), a.final(), "");
 }
 
-unsigned int altura(Arbre<int>::iterador p, Arbre<int>::iterador ul)
-{
-
-    if (p != ul)
-    {
-        int altV = altura(p.primogenit(), ul) + 1;
-        int altH = altura(p.seg_germa(), ul);
-
-        return max(altV, altH);
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-unsigned int altura(Arbre<int> &a)
-{
-    return altura(a.arrel(), a.final());
-}
-
-void print_level(Arbre<int>::iterador p, Arbre<int>::iterador ul, int actual, int level)
-{
-    if (p != ul)
-    {
-        if (actual == level)
-        {
-            cout << " " << *p;
-            print_level(p.seg_germa(), ul, actual, level);
-        }
-        else
-        {
-            print_level(p.primogenit(),ul, actual+1, level);
-            print_level(p.seg_germa(), ul, actual, level);
-        }
-    }
-}
-
-void print_level(Arbre<int> &a, int level)
-{
-    int actual = 1;
-    print_level(a.arrel(), a.final(), actual, level);
-}
-
-
-bool es_avl(Arbre<int>::iterador p, Arbre<int>::iterador ul)
-{
-    if (p != ul)
-    {
-
-        Arbre<int>::iterador germ = p.seg_germa();
-        int diff = 1;
-        while (germ != ul)
-        {
-            diff = (diff - altura(p.seg_germa(),ul));
-            if (diff < 0)
-                diff *= -1;
-
-            germ = germ.seg_germa();
-        }
-
-        return (diff <= 1) and es_avl(p.primogenit(), ul) and es_avl(p.seg_germa(), ul);
-    }
-    else
-    {
-        return true;
-    }
-    
-}
-
-bool es_avl(Arbre<int> &a)
-{
-    return es_avl(a.arrel(), a.final());
-}
-
 int main()
 {
     int n, j = 0;
@@ -185,11 +110,4 @@ int main()
     Arbre<int> a(mount(v));
     print(a);
     draw(a);
-
-    cout << "Altura: " << altura(a) << endl;
-    cout << "Level 2: ";
-    print_level(a, 3);
-    cout << endl;
-
-    cout << "Es AVL ? " << (es_avl(a) ? "sí" : "no") << endl;
 }
