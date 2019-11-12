@@ -74,6 +74,7 @@ private:
     bool search(const Clau &k, node *n) const;
     unsigned int high(node *n) const;
     int balance(node *n);
+    Clau iessim(nat i, nat &actual, node *n, bool &found) const;
     void print(node *n) const;
     void print_interval(const Clau &k1, const Clau &k2, node *n) const;
 
@@ -209,7 +210,11 @@ Clau dicc<Clau>::max() const
 template <typename Clau>
 Clau dicc<Clau>::iessim(nat i) const
 {
+    unsigned int node = 0;
+    bool found = false;
+    return iessim(i, node, m_root, found);
 }
+
 template <typename Clau>
 unsigned int dicc<Clau>::max(unsigned int a, unsigned int b)
 {
@@ -425,6 +430,29 @@ bool dicc<Clau>::search(const Clau &k, node *n) const
     }
 
     return false;
+}
+
+template <typename Clau>
+Clau dicc<Clau>::iessim(nat i, nat &actual, node *n, bool &found) const
+{
+    Clau res;
+    if (n != nullptr)
+    {
+
+        res = iessim(i, actual, n->m_ls, found);
+        ++actual;
+        if (actual == i)
+        {
+            found = true;
+            return n->m_key;
+        }
+            
+        if (not found)
+            res = iessim(i, actual, n->m_rs, found);
+        
+    }
+
+    return res;
 }
 
 template <typename Clau>
