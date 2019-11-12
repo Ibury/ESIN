@@ -1,0 +1,44 @@
+[-7 -6 -3 -1 2 5 7 8]
+quants: 8
+consulta -3: 1
+consulta -4: 0
+consulta 6: 0
+consulta 9: 0
+insereix -4: 9
+consulta -4: 1
+insereix 6: 10
+consulta 6: 1
+insereix 9: 11
+consulta 9: 1
+insereix 8: 11
+print: [-7 -6 -4 -3 -1 2 5 6 7 8 9]
+print_interval -2 6: [-1 2 5 6]
+min: -7
+max: 9
+iessim 1: -7
+iessim 2: -6
+iessim 5: -1
+iessim 7: 5
+iessim 11: 9
+elimina -3: 11
+consulta -3: 0
+elimina -7: 11
+consulta -7: 0
+elimina 7: 11
+consulta 7: 0
+elimina 7: 11
+print: []
+min: -7
+max: 9
+iessim 1: 32513
+iessim 2: 32513
+iessim 5: 32513
+elimina -6: 11
+elimina 5: 11
+elimina 9: 11
+print: []
+min: -7
+max: 9
+iessim 1: 32513
+iessim 2: 32513
+iessim 4: 32513
