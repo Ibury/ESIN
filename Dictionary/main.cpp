@@ -2,6 +2,8 @@
 #include <sstream>
 using namespace std;
 
+#include "solucio.cpp"
+
 int main() {
   string linea, comanda;;
   int n, n1, n2;
@@ -54,6 +56,10 @@ int main() {
       } else if (comanda == "iessim") {
         ss2 >> n;
         cout << d.iessim(n);
+      // My own commands
+      } else if(comanda == "high") {
+        ss2 >> n;
+        cout << d.public_high(n);
       }
       cout<<endl;
     }

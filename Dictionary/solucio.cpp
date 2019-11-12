@@ -44,6 +44,9 @@ public:
     // Pre: El diccionari no està buit. 1 <= i <= quants()
     Clau iessim(nat i) const;
 
+    // TEST PUBLIC METHODS
+    unsigned int public_high(const Clau &k);
+
 private:
     // Aquí van els atributs i mètodes privats
     struct node
@@ -57,16 +60,25 @@ private:
     Clau m_min;
     Clau m_max;
 
+    unsigned int m_total;
+
     node *m_root;
 
-    void insert(const Clau &k, node *prev, node *act);
+    unsigned int max(unsigned int a, unsigned int b);
+    node *left_rotation(node *n);
+    node *right_rotation(node *n);
+    node *insert(const Clau &k, node *act);
     void remove(const Clau &k, node *n);
     void remove_all(node *n);
     node *copy_all(node *src);
     bool search(const Clau &k, node *n) const;
     unsigned int high(node *n) const;
+    int balance(node *n);
     void print(node *n) const;
     void print_interval(const Clau &k1, const Clau &k2, node *n) const;
+
+    // TEST PRIVATE METHODS
+    unsigned int find_high(const Clau &k, node *n);
 };
 
 // Aquí va la implementació dels mètodes públics i privats
@@ -74,8 +86,9 @@ private:
 template <typename Clau>
 dicc<Clau>::dicc()
 {
-    m_min = m_max = (Clau) 0;
+    m_min = m_max = (Clau)0;
     m_root = nullptr;
+    m_total = 0;
 }
 
 template <typename Clau>
@@ -84,6 +97,7 @@ dicc<Clau>::dicc(const dicc &d)
     m_root = copy_all(d.m_root);
     m_min = d.m_min;
     m_max = d.m_max;
+    m_total = d.m_total;
 }
 
 template <typename Clau>
@@ -92,6 +106,7 @@ dicc<Clau>::~dicc()
     remove_all(m_root);
     m_min = 0;
     m_max = 0;
+    m_total = 0;
 }
 
 template <typename Clau>
@@ -115,6 +130,11 @@ dicc<Clau> &dicc<Clau>::operator=(const dicc<Clau> &d)
 
         m_max = C.m_max;
         C.m_max = val;
+
+        val = m_total;
+
+        m_total = C.m_total;
+        C.m_total = val;
     }
 
     return *this;
@@ -123,7 +143,7 @@ dicc<Clau> &dicc<Clau>::operator=(const dicc<Clau> &d)
 template <typename Clau>
 void dicc<Clau>::insereix(const Clau &k)
 {
-    if (m_root == nullptr)
+    /* if (m_root == nullptr)
     {
         m_root = new node;
 
@@ -131,11 +151,14 @@ void dicc<Clau>::insereix(const Clau &k)
         m_root->m_high = high(m_root);
 
         m_root->m_key = k;
+
+        ++m_total;
     }
     else
     {
-        insert(k, nullptr, m_root);
-    }
+        insert(k, m_root);
+    }*/
+    m_root = insert(k, m_root);
 }
 
 template <typename Clau>
@@ -152,19 +175,23 @@ bool dicc<Clau>::consulta(const Clau &k) const
 template <typename Clau>
 nat dicc<Clau>::quants() const
 {
-    return m_root->m_total;
+    return m_total;
 }
 
 template <typename Clau>
 void dicc<Clau>::print() const
 {
+    cout << "[";
     print(m_root);
+    cout << "]";
 }
 
 template <typename Clau>
 void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2) const
 {
+    cout << "[";
     print_interval(k1, k2, m_root);
+    cout << "]";
 }
 
 template <typename Clau>
@@ -183,74 +210,164 @@ template <typename Clau>
 Clau dicc<Clau>::iessim(nat i) const
 {
 }
+template <typename Clau>
+unsigned int dicc<Clau>::max(unsigned int a, unsigned int b)
+{
+    if (a < b)
+        return b;
+    else
+        return a;
+}
 
 template <typename Clau>
 unsigned int dicc<Clau>::high(node *n) const
 {
-    if (n->ls == nullptr and n->rs != nullptr)
+    /*
+    if (n->m_ls == nullptr and n->m_rs != nullptr)
     {
-        return n->rs->m_high;
+        return n->m_rs->m_high;
     }
-    else if (n->ls != nullptr and n->rs == nullptr)
+    else if (n->m_ls != nullptr and n->m_rs == nullptr)
     {
-        return n->ls->m_high;
+        return n->m_ls->m_high;
     }
-    else if (n->ls != nullptr and n->rs != nullptr)
+    else if (n->m_ls != nullptr and n->m_rs != nullptr)
     {
-        return max(n->ls->m_high, n->rs->m_high);
+        if (n->m_ls->m_high < n->m_rs->m_high)
+        {
+            return n->m_rs->m_high;
+        }
+        else
+        {
+            return n->m_ls->m_high;
+        }
     }
     else
     {
         return 1;
     }
+    */
+    if (n != nullptr)
+        return n->m_high;
+    else
+        return 0;
 }
 
 template <typename Clau>
-void dicc<Clau>::insert(const Clau &k, node *prev, node *act)
+int dicc<Clau>::balance(node *n)
 {
+    if (n != nullptr)
+        return high(n->m_ls) - high(n->m_rs);
+    else
+        return 0;
+}
+
+template <typename Clau>
+typename dicc<Clau>::node *dicc<Clau>::left_rotation(node *n)
+{
+    node *a = n;
+    node *c = n->m_rs;
+
+    a->m_rs = c->m_ls;
+    c->m_ls = a;
+
+    a = c;
+
+    a->m_high = max(high(a->m_ls), high(a->m_rs)) + 1;
+    c->m_high = max(high(c->m_ls), high(c->m_rs)) + 1;
+}
+
+template <typename Clau>
+typename dicc<Clau>::node *dicc<Clau>::right_rotation(node *n)
+{
+    node *a = n;
+    node *c = n->m_ls;
+
+    a->m_ls = c->m_rs;
+    c->m_rs = a;
+
+    a = c;
+
+    a->m_high = max(high(a->m_ls), high(a->m_rs)) + 1;
+    c->m_high = max(high(c->m_ls), high(c->m_rs)) + 1;
+}
+
+template <typename Clau>
+typename dicc<Clau>::node *dicc<Clau>::insert(const Clau &k, node *act)
+{
+    node *n = nullptr;
+
     if (act != nullptr)
     {
-
-        if (k < act->m_key)
+        if (k > act->m_key)
         {
-            if (act->m_ls == nullptr)
-            {
-                node *n = new node;
-
-                n->m_key = k;
-                n->m_ls = n->m_fs = nullptr;
-                n->m_high = 1;
-
-                ++act->m_high;
-            }
-            else
-            {
-                insert(k, act, act->m_ls);
-                insert(k, act, act->m_rs);
-            }
+            act->m_rs = insert(k, act->m_rs);
         }
-        else if (k > act->m_key)
+        else if (k < act->m_key)
         {
-            if (act->m_rs == nullptr)
-            {
-                node *n = new node;
-
-                n->m_key = k;
-                n->m_ls = n->m_fs = nullptr;
-                n->m_high = 1;
-
-                ++act->m_high;
-            }
-            else
-            {
-                insert(k, act, act->m_ls);
-                insert(k, act, act->m_rs);
-            }
+            act->m_ls = insert(k, act->m_ls);
+        }
+        else
+        { // Duplicated node !!
+            return n;
         }
 
+        act->m_high = max(high(act->m_ls), high(act->m_rs)) + 1;
 
-        act->high = high(act);
+        int b = balance(act);
+
+        // Simple cases
+        // ##############################################################
+
+        // Left
+        if (b > 1 and k < act->m_ls->m_key)
+        {
+            return right_rotation(act);
+        }
+
+        // Right
+        if (b < -1 and k > act->m_rs->m_key)
+        {
+            return left_rotation(act);
+        }
+        // ##############################################################
+
+        // Two step cases
+        // ##############################################################
+
+        // Left-Right
+        if (b > 1 and k > act->m_ls->m_key)
+        {
+            act->m_ls = left_rotation(act->m_ls);
+            return right_rotation(act);
+        }
+
+        // Right-Left
+        if (b < -1 and k < act->m_rs->m_key)
+        {
+            act->m_rs = right_rotation(act->m_rs);
+            return left_rotation(act);
+        }
+        // ##############################################################
+
+        return act;
     }
+    else
+    {
+        n = new node;
+        n->m_key = k;
+        n->m_ls = n->m_rs = NULL;
+        n->m_high = 1;
+        ++m_total;
+
+        if (k > m_max)
+            m_max = k;
+
+        if (k < m_min)
+            m_min = k;
+    }
+
+    return n;
 }
 
 template <typename Clau>
@@ -292,14 +409,22 @@ bool dicc<Clau>::search(const Clau &k, node *n) const
             return true;
         else
         {
-            if (not search(k, n->m_ls))
-                return search(k, n->m_fs);
+            if (k < n->m_key and n->m_ls != nullptr)
+            {
+                return search(k, n->m_ls);
+            }
+            else if (k > n->m_key and n->m_rs != nullptr)
+            {
+                return search(k, n->m_rs);
+            }
         }
     }
     else
     {
         return false;
     }
+
+    return false;
 }
 
 template <typename Clau>
@@ -309,6 +434,8 @@ void dicc<Clau>::print(node *n) const
     {
         print(n->m_ls);
         cout << n->m_key;
+        if (n->m_key != m_max)
+            cout << " ";
         print(n->m_rs);
     }
 }
@@ -320,14 +447,50 @@ void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2, node *n) const
     {
         if (k1 <= n->m_key and n->m_key <= k2)
         {
-            print_interval(k1, k2, n->ls);
-            cout << n->m_key << ", ";
-            print_interval(k1, k2, n->rs);
+            print_interval(k1, k2, n->m_ls);
+            cout << n->m_key;
+            if (n->m_key != k2)
+                cout << " ";
+            print_interval(k1, k2, n->m_rs);
         }
         else
         {
-            print_interval(k1, k2, n->ls);
-            print_interval(k1, k2, n->rs);
+            print_interval(k1, k2, n->m_ls);
+            print_interval(k1, k2, n->m_rs);
         }
     }
+}
+
+// TEST METHODS
+template <typename Clau>
+unsigned int dicc<Clau>::find_high(const Clau &k, node *n)
+{
+    if (n != nullptr)
+    {
+        if (n->m_key == k)
+            return n->m_high;
+        else
+        {
+            if (k < n->m_key and n->m_ls != nullptr)
+            {
+                return search(k, n->m_ls);
+            }
+            else if (k > n->m_key and n->m_rs != nullptr)
+            {
+                return search(k, n->m_rs);
+            }
+        }
+    }
+    else
+    {
+        return 0;
+    }
+
+    return 0;
+}
+
+template <typename Clau>
+unsigned int dicc<Clau>::public_high(const Clau &k)
+{
+    return find_high(k, m_root);
 }
