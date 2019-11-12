@@ -309,7 +309,7 @@ typename dicc<Clau>::node *dicc<Clau>::insert(const Clau &k, node *act)
         }
         else
         { // Duplicated node !!
-            return n;
+            return act;
         }
 
         act->m_high = max(high(act->m_ls), high(act->m_rs)) + 1;

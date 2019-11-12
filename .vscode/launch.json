@@ -9,7 +9,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Session5/build/main.e",
+            "program": "${workspaceFolder}/Dictionary/a.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
