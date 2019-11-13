@@ -59,7 +59,7 @@ int main() {
       // My own commands
       } else if(comanda == "high") {
         ss2 >> n;
-        cout << d.public_high(n);
+        //cout << d.public_high(n);
       }
       cout<<endl;
     }

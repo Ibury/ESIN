@@ -44,9 +44,6 @@ public:
     // Pre: El diccionari no està buit. 1 <= i <= quants()
     Clau iessim(nat i) const;
 
-    // TEST PUBLIC METHODS
-    unsigned int public_high(const Clau &k);
-
 private:
     // Aquí van els atributs i mètodes privats
     struct node
@@ -78,20 +75,31 @@ private:
     unsigned int high(node *n) const;
     int balance(node *n);
     Clau iessim(nat i, nat &actual, node *n, bool &found) const;
-    void print(node *n) const;
-    void print_interval(const Clau &k1, const Clau &k2, node *n) const;
-
-    // TEST PRIVATE METHODS
-    unsigned int find_high(const Clau &k, node *n);
+    void print(node *n, string &str) const;
+    void print_interval(const Clau &k1, const Clau &k2, node *n, string &str) const;
 };
 
 // Aquí va la implementació dels mètodes públics i privats
+
+#include <string>
+#include <sstream>
+
+// FIX: g++-5 does not support to_string method from std.
+namespace patch
+{
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+}
 
 template <typename Clau>
 dicc<Clau>::dicc()
 {
     m_min = m_max = (Clau)0;
-    m_root = nullptr;
+    m_root = NULL;
     m_total = 0;
 }
 
@@ -171,17 +179,21 @@ nat dicc<Clau>::quants() const
 template <typename Clau>
 void dicc<Clau>::print() const
 {
+    string str = "";
+
     cout << "[";
-    print(m_root);
-    cout << "]";
+    print(m_root, str);
+    cout << str.substr(0, str.size()-1) << "]";
 }
 
 template <typename Clau>
 void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2) const
 {
+    string str = "";
+
     cout << "[";
-    print_interval(k1, k2, m_root);
-    cout << "]";
+    print_interval(k1, k2, m_root, str);
+    cout << str.substr(0, str.size()-1)<< "]";
 }
 
 template <typename Clau>
@@ -207,9 +219,9 @@ Clau dicc<Clau>::iessim(nat i) const
 template <typename Clau>
 Clau dicc<Clau>::min(node *n) const
 {
-    node *prev = nullptr;
+    node *prev = NULL;
 
-    while (n != nullptr)
+    while (n != NULL)
     {
         prev = n;
         n = n->m_ls;
@@ -221,9 +233,9 @@ Clau dicc<Clau>::min(node *n) const
 template <typename Clau>
 Clau dicc<Clau>::max(node *n) const
 {
-    node *prev = nullptr;
+    node *prev = NULL;
 
-    while (n != nullptr)
+    while (n != NULL)
     {
         prev = n;
         n = n->m_rs;
@@ -244,7 +256,7 @@ unsigned int dicc<Clau>::max(unsigned int a, unsigned int b)
 template <typename Clau>
 unsigned int dicc<Clau>::high(node *n) const
 {
-    if (n != nullptr)
+    if (n != NULL)
         return n->m_high;
     else
         return 0;
@@ -253,7 +265,7 @@ unsigned int dicc<Clau>::high(node *n) const
 template <typename Clau>
 int dicc<Clau>::balance(node *n)
 {
-    if (n != nullptr)
+    if (n != NULL)
         return high(n->m_ls) - high(n->m_rs);
     else
         return 0;
@@ -292,9 +304,9 @@ typename dicc<Clau>::node *dicc<Clau>::right_rotation(node *n)
 template <typename Clau>
 typename dicc<Clau>::node *dicc<Clau>::insert(const Clau &k, node *act)
 {
-    node *n = nullptr;
+    node *n = NULL;
 
-    if (act != nullptr)
+    if (act != NULL)
     {
         if (k > act->m_key)
         {
@@ -366,7 +378,7 @@ typename dicc<Clau>::node *dicc<Clau>::left_leave(node *n)
 {
     node *tmp = n;
 
-    while (tmp->m_ls != nullptr)
+    while (tmp->m_ls != NULL)
     {
         tmp = tmp->m_ls;
     }
@@ -378,7 +390,7 @@ template <typename Clau>
 typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
 {
 
-    if (n != nullptr)
+    if (n != NULL)
     {
         if (k < n->m_key)
         {
@@ -390,14 +402,15 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
         }
         else
         {
-            if (n->m_ls == nullptr or n->m_rs == nullptr)
+            if (n->m_ls == NULL or n->m_rs == NULL)
             {
-                node *tmp = (n->m_ls != nullptr) ? n->m_ls : n->m_rs;
+                node *tmp = (n->m_ls != NULL) ? n->m_ls : n->m_rs;
 
-                if (tmp == nullptr)
+                if (tmp == NULL)
                 {
                     tmp = n;
                     --m_total;
+                    n = NULL;
                 }
                 else
                 {
@@ -405,7 +418,6 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
                     --m_total;
                 }
                 delete tmp;
-                return nullptr;
             }
             else
             {
@@ -414,17 +426,17 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
                 n->m_rs = remove(tmp->m_key, n->m_rs);
             }
 
-            if (n != nullptr)
+            if (n != NULL)
             {
-                if (n->m_ls != nullptr and n->m_rs != nullptr)
+                if (n->m_ls != NULL and n->m_rs != NULL)
                 {
                     n->m_high = max(high(n->m_ls), high(n->m_rs)) + 1;
                 }
-                else if (n->m_ls != nullptr and n->m_rs == nullptr)
+                else if (n->m_ls != NULL and n->m_rs == NULL)
                 {
                     n->m_high = n->m_ls->m_high + 1;
                 }
-                else if (n->m_ls == nullptr and n->m_rs != nullptr)
+                else if (n->m_ls == NULL and n->m_rs != NULL)
                 {
                     n->m_high = n->m_rs->m_high + 1;
                 }
@@ -432,23 +444,23 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
 
             int b = balance(n);
 
-            if (b > 1 && balance(n->m_ls) >= 0)
+            if (b > 1 and balance(n->m_ls) >= 0)
             {
                 return right_rotation(n);
             }
 
-            if (b > 1 && balance(n->m_ls) < 0)
+            if (b > 1 and balance(n->m_ls) < 0)
             {
                 n->m_ls = left_rotation(n->m_ls);
                 return right_rotation(n);
             }
 
-            if (b < -1 && balance(n->m_rs) <= 0)
+            if (b < -1 and balance(n->m_rs) <= 0)
             {
                 return left_rotation(n);
             }
 
-            if (b < -1 && balance(n->m_rs) > 0)
+            if (b < -1 and balance(n->m_rs) > 0)
             {
                 n->m_rs = right_rotation(n->m_rs);
                 return left_rotation(n);
@@ -462,7 +474,7 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
 template <typename Clau>
 void dicc<Clau>::remove_all(node *n)
 {
-    if (n != nullptr)
+    if (n != NULL)
     {
         remove_all(n->m_ls);
         remove_all(n->m_rs);
@@ -473,7 +485,7 @@ void dicc<Clau>::remove_all(node *n)
 template <typename Clau>
 typename dicc<Clau>::node *dicc<Clau>::copy_all(node *src)
 {
-    if (src != nullptr)
+    if (src != NULL)
     {
         node *n = new node;
 
@@ -487,17 +499,17 @@ typename dicc<Clau>::node *dicc<Clau>::copy_all(node *src)
 template <typename Clau>
 bool dicc<Clau>::search(const Clau &k, node *n) const
 {
-    if (n != nullptr)
+    if (n != NULL)
     {
         if (n->m_key == k)
             return true;
         else
         {
-            if (k < n->m_key and n->m_ls != nullptr)
+            if (k < n->m_key and n->m_ls != NULL)
             {
                 return search(k, n->m_ls);
             }
-            else if (k > n->m_key and n->m_rs != nullptr)
+            else if (k > n->m_key and n->m_rs != NULL)
             {
                 return search(k, n->m_rs);
             }
@@ -515,7 +527,7 @@ template <typename Clau>
 Clau dicc<Clau>::iessim(nat i, nat &actual, node *n, bool &found) const
 {
     Clau res;
-    if (n != nullptr)
+    if (n != NULL)
     {
 
         res = iessim(i, actual, n->m_ls, found);
@@ -534,69 +546,31 @@ Clau dicc<Clau>::iessim(nat i, nat &actual, node *n, bool &found) const
 }
 
 template <typename Clau>
-void dicc<Clau>::print(node *n) const
+void dicc<Clau>::print(node *n, string &str) const
 {
-    if (n != nullptr)
+    if (n != NULL)
     {
-        print(n->m_ls);
-        cout << n->m_key;
-        if (n->m_key != m_max)
-            cout << " ";
-        print(n->m_rs);
+        print(n->m_ls, str);
+        str += patch::to_string(n->m_key) + " ";
+        print(n->m_rs, str);
     }
 }
 
 template <typename Clau>
-void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2, node *n) const
+void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2, node *n, string &str) const
 {
-    if (n != nullptr)
+    if (n != NULL)
     {
         if (k1 <= n->m_key and n->m_key <= k2)
         {
-            print_interval(k1, k2, n->m_ls);
-            cout << n->m_key;
-            if (n->m_key != k2)
-                cout << " ";
-            print_interval(k1, k2, n->m_rs);
+            print_interval(k1, k2, n->m_ls, str);
+            str += patch::to_string(n->m_key) + " ";
+            print_interval(k1, k2, n->m_rs, str);
         }
         else
         {
-            print_interval(k1, k2, n->m_ls);
-            print_interval(k1, k2, n->m_rs);
+            print_interval(k1, k2, n->m_ls, str);
+            print_interval(k1, k2, n->m_rs, str);
         }
     }
-}
-
-// TEST METHODS
-template <typename Clau>
-unsigned int dicc<Clau>::find_high(const Clau &k, node *n)
-{
-    if (n != nullptr)
-    {
-        if (n->m_key == k)
-            return n->m_high;
-        else
-        {
-            if (k < n->m_key and n->m_ls != nullptr)
-            {
-                return search(k, n->m_ls);
-            }
-            else if (k > n->m_key and n->m_rs != nullptr)
-            {
-                return search(k, n->m_rs);
-            }
-        }
-    }
-    else
-    {
-        return 0;
-    }
-
-    return 0;
-}
-
-template <typename Clau>
-unsigned int dicc<Clau>::public_high(const Clau &k)
-{
-    return find_high(k, m_root);
 }
