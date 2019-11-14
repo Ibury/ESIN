@@ -51,19 +51,19 @@ private:
         Clau m_key;
         node *m_ls;
         node *m_rs;
-        unsigned int m_high;
+        nat m_high;
     };
 
     Clau m_min;
     Clau m_max;
 
-    unsigned int m_total;
+    nat m_total;
 
     node *m_root;
 
     Clau min(node *n) const;
     Clau max(node *n) const;
-    unsigned int max(unsigned int a, unsigned int b);
+    nat max(nat a, nat b);
     node *left_rotation(node *n);
     node *right_rotation(node *n);
     node *insert(const Clau &k, node *act);
@@ -72,7 +72,7 @@ private:
     void remove_all(node *n);
     node *copy_all(node *src);
     bool search(const Clau &k, node *n) const;
-    unsigned int high(node *n) const;
+    nat high(node *n) const;
     int balance(node *n);
     Clau iessim(nat i, nat &actual, node *n, bool &found) const;
     void print(node *n, string &str) const;
@@ -87,13 +87,14 @@ private:
 // FIX: g++-5 does not support to_string method from std.
 namespace patch
 {
-    template < typename T > std::string to_string( const T& n )
-    {
-        std::ostringstream stm ;
-        stm << n ;
-        return stm.str() ;
-    }
+template <typename T>
+std::string to_string(const T &n)
+{
+    std::ostringstream stm;
+    stm << n;
+    return stm.str();
 }
+} // namespace patch
 
 template <typename Clau>
 dicc<Clau>::dicc()
@@ -133,7 +134,7 @@ dicc<Clau> &dicc<Clau>::operator=(const dicc<Clau> &d)
         m_root = C.m_root;
         C.m_root = tmp;
 
-        unsigned int val = m_min;
+        nat val = m_min;
 
         m_min = C.m_min;
         C.m_min = val;
@@ -183,7 +184,7 @@ void dicc<Clau>::print() const
 
     cout << "[";
     print(m_root, str);
-    cout << str.substr(0, str.size()-1) << "]";
+    cout << str.substr(0, str.size() - 1) << "]";
 }
 
 template <typename Clau>
@@ -193,7 +194,7 @@ void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2) const
 
     cout << "[";
     print_interval(k1, k2, m_root, str);
-    cout << str.substr(0, str.size()-1)<< "]";
+    cout << str.substr(0, str.size() - 1) << "]";
 }
 
 template <typename Clau>
@@ -211,7 +212,7 @@ Clau dicc<Clau>::max() const
 template <typename Clau>
 Clau dicc<Clau>::iessim(nat i) const
 {
-    unsigned int node = 0;
+    nat node = 0;
     bool found = false;
     return iessim(i, node, m_root, found);
 }
@@ -245,7 +246,7 @@ Clau dicc<Clau>::max(node *n) const
 }
 
 template <typename Clau>
-unsigned int dicc<Clau>::max(unsigned int a, unsigned int b)
+nat dicc<Clau>::max(nat a, nat b)
 {
     if (a < b)
         return b;
@@ -254,7 +255,7 @@ unsigned int dicc<Clau>::max(unsigned int a, unsigned int b)
 }
 
 template <typename Clau>
-unsigned int dicc<Clau>::high(node *n) const
+nat dicc<Clau>::high(node *n) const
 {
     if (n != NULL)
         return n->m_high;
@@ -274,31 +275,31 @@ int dicc<Clau>::balance(node *n)
 template <typename Clau>
 typename dicc<Clau>::node *dicc<Clau>::left_rotation(node *n)
 {
-    node *a = n;
-    node *c = n->m_rs;
+    node *a = n->m_rs;
+    node *c = a->m_ls;
 
-    a->m_rs = c->m_ls;
-    c->m_ls = a;
+    a->m_ls = n;
+    n->m_rs = c;
 
-    a = c;
-
+    n->m_high = max(high(n->m_ls), high(n->m_rs)) + 1;
     a->m_high = max(high(a->m_ls), high(a->m_rs)) + 1;
-    c->m_high = max(high(c->m_ls), high(c->m_rs)) + 1;
+
+    return a;
 }
 
 template <typename Clau>
 typename dicc<Clau>::node *dicc<Clau>::right_rotation(node *n)
 {
-    node *a = n;
-    node *c = n->m_ls;
+    node *a = n->m_ls;
+    node *c = a->m_rs;
 
-    a->m_ls = c->m_rs;
-    c->m_rs = a;
+    a->m_rs = n;
+    n->m_ls = c;
 
-    a = c;
-
+    n->m_high = max(high(n->m_ls), high(n->m_rs)) + 1;
     a->m_high = max(high(a->m_ls), high(a->m_rs)) + 1;
-    c->m_high = max(high(c->m_ls), high(c->m_rs)) + 1;
+
+    return a;
 }
 
 template <typename Clau>
@@ -328,13 +329,13 @@ typename dicc<Clau>::node *dicc<Clau>::insert(const Clau &k, node *act)
         // Simple cases
         // ##############################################################
 
-        // Left
+        // Left-Left
         if (b > 1 and k < act->m_ls->m_key)
         {
             return right_rotation(act);
         }
 
-        // Right
+        // Right-Right
         if (b < -1 and k > act->m_rs->m_key)
         {
             return left_rotation(act);
@@ -426,45 +427,46 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
                 n->m_rs = remove(tmp->m_key, n->m_rs);
             }
 
-            if (n != NULL)
-            {
-                if (n->m_ls != NULL and n->m_rs != NULL)
-                {
-                    n->m_high = max(high(n->m_ls), high(n->m_rs)) + 1;
-                }
-                else if (n->m_ls != NULL and n->m_rs == NULL)
-                {
-                    n->m_high = n->m_ls->m_high + 1;
-                }
-                else if (n->m_ls == NULL and n->m_rs != NULL)
-                {
-                    n->m_high = n->m_rs->m_high + 1;
-                }
-            }
+            if (n == NULL)
+                return n;
+
+            n->m_high = max(high(n->m_ls), high(n->m_rs));
 
             int b = balance(n);
 
+            // Simple cases
+            // ##############################################################
+
+            // Left-Left
             if (b > 1 and balance(n->m_ls) >= 0)
             {
                 return right_rotation(n);
             }
 
+            // Left-Right
             if (b > 1 and balance(n->m_ls) < 0)
             {
                 n->m_ls = left_rotation(n->m_ls);
                 return right_rotation(n);
             }
+            // ##############################################################
 
+            // Two step cases
+            // ##############################################################
+
+            // Right-Right
             if (b < -1 and balance(n->m_rs) <= 0)
             {
                 return left_rotation(n);
             }
 
+            // Right-Left
             if (b < -1 and balance(n->m_rs) > 0)
             {
                 n->m_rs = right_rotation(n->m_rs);
                 return left_rotation(n);
             }
+            // ##############################################################
         }
     }
 
@@ -561,7 +563,15 @@ void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2, node *n, string 
 {
     if (n != NULL)
     {
-        if (k1 <= n->m_key and n->m_key <= k2)
+        if (k1 < n->m_key and k2 < n->m_key)
+        {
+            print_interval(k1, k2, n->m_ls, str);
+        }
+        else if (k1 > n->m_key and k2 > n->m_key)
+        {
+            print_interval(k1, k2, n->m_rs, str);
+        }
+        else if (k1 <= n->m_key and n->m_key <= k2)
         {
             print_interval(k1, k2, n->m_ls, str);
             str += patch::to_string(n->m_key) + " ";
@@ -570,7 +580,7 @@ void dicc<Clau>::print_interval(const Clau &k1, const Clau &k2, node *n, string 
         else
         {
             print_interval(k1, k2, n->m_ls, str);
-            print_interval(k1, k2, n->m_rs, str);
+            print_interval(k1, k2, n->m_ls, str);
         }
     }
 }
