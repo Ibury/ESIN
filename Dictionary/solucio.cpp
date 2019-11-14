@@ -54,9 +54,6 @@ private:
         nat m_high;
     };
 
-    Clau m_min;
-    Clau m_max;
-
     nat m_total;
 
     node *m_root;
@@ -74,7 +71,8 @@ private:
     bool search(const Clau &k, node *n) const;
     nat high(node *n) const;
     int balance(node *n);
-    Clau iessim(nat i, nat &actual, node *n, bool &found) const;
+    Clau iessim_positive(nat i, nat &actual, node *n, bool &found) const;
+    Clau iessim_negative(nat i, nat &actual, node *n, bool &found) const;
     void print(node *n, string &str) const;
     void print_interval(const Clau &k1, const Clau &k2, node *n, string &str) const;
 };
@@ -99,7 +97,6 @@ std::string to_string(const T &n)
 template <typename Clau>
 dicc<Clau>::dicc()
 {
-    m_min = m_max = (Clau)0;
     m_root = NULL;
     m_total = 0;
 }
@@ -108,8 +105,6 @@ template <typename Clau>
 dicc<Clau>::dicc(const dicc &d)
 {
     m_root = copy_all(d.m_root);
-    m_min = d.m_min;
-    m_max = d.m_max;
     m_total = d.m_total;
 }
 
@@ -117,8 +112,6 @@ template <typename Clau>
 dicc<Clau>::~dicc()
 {
     remove_all(m_root);
-    m_min = 0;
-    m_max = 0;
     m_total = 0;
 }
 
@@ -134,17 +127,7 @@ dicc<Clau> &dicc<Clau>::operator=(const dicc<Clau> &d)
         m_root = C.m_root;
         C.m_root = tmp;
 
-        nat val = m_min;
-
-        m_min = C.m_min;
-        C.m_min = val;
-
-        val = m_max;
-
-        m_max = C.m_max;
-        C.m_max = val;
-
-        val = m_total;
+        nat val = m_total;
 
         m_total = C.m_total;
         C.m_total = val;
@@ -214,7 +197,32 @@ Clau dicc<Clau>::iessim(nat i) const
 {
     nat node = 0;
     bool found = false;
-    return iessim(i, node, m_root, found);
+    Clau ret = 0;
+
+    nat m = m_total / 2;
+
+    if (i >= 1 and i <= m_total)
+    {
+
+        if (i < m)
+        {
+            ret = iessim_positive(i, node, m_root, found);
+        }
+        else
+        {
+            node = m_total + 1;
+            ret = iessim_negative(i, node, m_root, found);
+        }
+
+        if (not found)
+            return m_root->m_key;
+
+        return ret;
+    }
+    else
+    {
+        return ret;
+    }
 }
 
 template <typename Clau>
@@ -430,7 +438,7 @@ typename dicc<Clau>::node *dicc<Clau>::remove(const Clau &k, node *n)
             if (n == NULL)
                 return n;
 
-            n->m_high = max(high(n->m_ls), high(n->m_rs));
+            n->m_high = max(high(n->m_ls), high(n->m_rs)) + 1;
 
             int b = balance(n);
 
@@ -526,13 +534,13 @@ bool dicc<Clau>::search(const Clau &k, node *n) const
 }
 
 template <typename Clau>
-Clau dicc<Clau>::iessim(nat i, nat &actual, node *n, bool &found) const
+Clau dicc<Clau>::iessim_positive(nat i, nat &actual, node *n, bool &found) const
 {
-    Clau res;
+    Clau ret;
     if (n != NULL)
     {
 
-        res = iessim(i, actual, n->m_ls, found);
+        ret = iessim_positive(i, actual, n->m_ls, found);
         ++actual;
         if (actual == i)
         {
@@ -541,10 +549,32 @@ Clau dicc<Clau>::iessim(nat i, nat &actual, node *n, bool &found) const
         }
 
         if (not found)
-            res = iessim(i, actual, n->m_rs, found);
+            ret = iessim_positive(i, actual, n->m_rs, found);
     }
 
-    return res;
+    return ret;
+}
+
+template <typename Clau>
+Clau dicc<Clau>::iessim_negative(nat i, nat &actual, node *n, bool &found) const
+{
+
+    Clau ret;
+    if (n != NULL)
+    {
+        ret = iessim_negative(i, actual, n->m_rs, found);
+        --actual;
+        if (actual == i)
+        {
+            found = true;
+            return n->m_key;
+        }
+
+        if (not found)
+            ret = iessim_negative(i, actual, n->m_ls, found);
+    }
+
+    return ret;
 }
 
 template <typename Clau>
