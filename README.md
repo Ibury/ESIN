@@ -13,7 +13,7 @@
 * [Linked list with nodes and pointers.](https://github.com/iluque95/ESIN/blob/master/Session4) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session4/sessio4.pdf)
 * [Binary tree traversal.](https://github.com/iluque95/ESIN/blob/master/Session5) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session5/sessio5.pdf)
 * [General Binary tree traversal and sum of them.](https://github.com/iluque95/ESIN/blob/master/Session6) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session6/sessio6.pdf)
-* [Binary Search Tree creation, insertion and searching.](https://github.com/iluque95/ESIN/blob/master/Session7/sessio7.pdf) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session7)
+* [Binary Search Tree creation, insertion and searching.](https://github.com/iluque95/ESIN/blob/master/Session7) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session7)
 * [Heaps & heapsort](https://github.com/iluque95/ESIN/blob/master/Session8) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Session8/sessio8.pdf)
 * [Dictionary (AVL).](https://github.com/iluque95/ESIN/blob/master/Dictionary/) [[PDF]](https://github.com/iluque95/ESIN/blob/master/Dictionary/X68607_ca/problem.pdf)
 * [Practice exercice for activity 1 (Node lists) Splitting in two lists.](https://github.com/iluque95/ESIN/tree/master/Activity3)
